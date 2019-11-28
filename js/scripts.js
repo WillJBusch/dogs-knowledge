@@ -4,7 +4,7 @@
     var pokemonRepository = (function() {
         var repository = [ ];
         var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-        
+
         // add additional pokemon to object array repository
         function add(pokemon) {
             repository.push(pokemon);
@@ -13,18 +13,18 @@
         function getAll() {
             return repository;
         }
-        
+
         function loadList() {
             return $.ajax(apiUrl, {dataType: 'json'})
                 .then(function(item) {
                     //using Ajax instead of fetch
-                    $.each(item.results, function(index, item) {
+                    $.each(item.results, (function(item) {
                         var pokemon = {
                             name: item.name,
                             detailsUrl: item.url
                         };
                         add(pokemon);
-                    });
+                    }));
                 })
                 .catch(function(e) {
                     console.error(e);
