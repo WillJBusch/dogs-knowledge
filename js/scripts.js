@@ -65,7 +65,7 @@
     function addListItem(pokemon) {
         var pokeList = $('.pokemon-list');
         var button = $('<button class = buttonToStyle></button');
-        var listItem = $('<li class="pokemon-list"></li>');
+        var listItem = $('<li ></li>');
         $(pokeList).append(listItem);
         $(button).text(pokemon.name);
         $(listItem).append(button);
