@@ -63,10 +63,10 @@
     });
 
     function addListItem(pokemon) {
-        var pokeList = $('.pokemon-list');
+        //var $pokeList = $('.pokemon-list');
         var button = $('<button class = buttonToStyle></button');
         var listItem = $('<li ></li>');
-        $(pokeList).append(listItem);
+        $($pokemonList).append(listItem);
         $(button).text(pokemon.name);
         $(listItem).append(button);
 
@@ -107,7 +107,7 @@
         });
 
         // avoid creating another modal everytime another button is clicked
-        if(exists) $modalContainer.removeChild(exists);
+        if(exists) $modalContainer.remove(exists);
 
         //appending elements
         $(modal).append(name);
@@ -119,11 +119,11 @@
         $($modalContainer).append(modal);
 
         //adding is visible class to make modal visible
-        $($modalContainer).addClass('is-visible');
+        $('#modal-container').addClass('is-visible');
 
     }
     //defining $modalContainer as modal-container again
-    var $modalContainer = $('#modal-container');
+    var $modalContainer = document.querySelector('#modal-container');
 
     //close modal esc
     window.addEventListener('keydown', (e) => {
@@ -149,9 +149,9 @@
     var $pokemonList = $('.pokemon-list');
 
     // declaring function to print pokemon
-    pokemonRepository.catchAll().each(function(podekomDetails) {
+    pokemonRepository.getAll().forEach(function(pokemonDetails) {
         addListItem(pokemonDetails);
     });
 
 
-});
+})();
