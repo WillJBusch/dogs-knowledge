@@ -2,7 +2,7 @@
 
 
     var pokemonRepository = (function() {
-        var repository = [ ];
+        var repository = [];
         var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
         // add additional pokemon to object array repository
@@ -18,7 +18,7 @@
             return $.ajax(apiUrl, {dataType: 'json'})
                 .then(function(item) {
                     //using Ajax instead of fetch
-                    $.each(item.results, (function(item) {
+                    $.each(item.results, (function(index, item) {
                         var pokemon = {
                             name: item.name,
                             detailsUrl: item.url
@@ -57,14 +57,14 @@
     
     pokemonRepository.loadList().then(function() {
         
-        pokemonRepository.getAll().forEach(function(pokemon) {
+        pokemonRepository.getAll().forEach(function(pokemon) {console.log(pokemon)
             addListItem(pokemon);
         });
     });
 
     function addListItem(pokemon) {
         //var $pokeList = $('.pokemon-list');
-        var button = $('<button class = buttonToStyle></button');
+        var button = $('<button class="buttonToStyle"></button');
         var listItem = $('<li ></li>');
         $($pokemonList).append(listItem);
         $(button).text(pokemon.name);
@@ -79,14 +79,16 @@
     function showDetails(item) {
         // creating variables and HTML-elements
         var $modalContainer = $('#modal-container');
-        var modal = $('<div class="modal"</div>');
-        var img = $('<img class="pokemon-img"</img>');
+        var modal = $('<div class="modal"></div>');
+        var img =  $('<img class="pokemon-img">');        
         var name = $('<h1 class="pokemon-name"></h1>');
         var height = $('<p class="pokemon-height"></p>');
-        var types = $('<p class="pokemon-types"></p>');
-        var closeButtonElement = $('<button class="modal-close"</button>');
-        var exists = $('.modal');
-        var pokemonDiv = $('<div class="pokemon-img-block"</div>');
+        var types = document.createElement('p');
+        types.classList.add('pokemon-types');  //$('<p class="pokemon-types"></p>');   ***Changed because it wouldn't work in jquery***
+        var closeButtonElement = $('<button class="modal-close"></button>');
+        //var exists = $('.modal');
+        var exists = document.querySelector('.modal'); /*********'removeChild' does not work if I reference modal via jQuery  *********/
+        var pokemonDiv = $('<div class="pokemon-img-block"></div>');
 
         //appending img to pokeomDiv for styling in css
         $(pokemonDiv).append(img);
@@ -97,7 +99,7 @@
 
         // loading pokemondetails into variable
         pokemonRepository.loadDetails(item).then(function () {
-            img.setAttribute('src'. item.imageUrl);
+            img.attr('src', item.imageUrl);
             $(name).text(item.name);
             $(height).text('Height - ' + item.height);
 
@@ -107,7 +109,9 @@
         });
 
         // avoid creating another modal everytime another button is clicked
-        if(exists) $modalContainer.remove(exists);
+        var $containerModal = document.querySelector('#modal-container'); /********* can't call 'removeChild' if the $modalContainer is referenced via jQuery -> $containerModal = JS *********/
+        if(exists) $containerModal.removeChild(exists);
+
 
         //appending elements
         $(modal).append(name);
@@ -123,7 +127,7 @@
 
     }
     //defining $modalContainer as modal-container again
-    var $modalContainer = document.querySelector('#modal-container');
+    var $modalContainer = $('#modal-container');
 
     //close modal esc
     window.addEventListener('keydown', (e) => {
@@ -133,7 +137,7 @@
     });
 
     // close modal by clicking outside of it    
-    $modalContainer.addEventListener('click', (e) => {
+    $modalContainer.on('click', (e) => {
         var target = e.target;
         if (target === $modalContainer) {
             hideModal();
@@ -149,9 +153,9 @@
     var $pokemonList = $('.pokemon-list');
 
     // declaring function to print pokemon
-    pokemonRepository.getAll().forEach(function(pokemonDetails) {
-        addListItem(pokemonDetails);
-    });
+    // pokemonRepository.catchAll().each(function(podekomDetails) {
+    //     addListItem(pokemonDetails);
+    // });
 
 
 })();
