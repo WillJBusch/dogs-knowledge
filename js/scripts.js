@@ -83,8 +83,7 @@
         var img =  $('<img class="pokemon-img">');        
         var name = $('<h1 class="pokemon-name"></h1>');
         var height = $('<p class="pokemon-height"></p>');
-        var types = document.createElement('p');
-        types.classList.add('pokemon-types');  //$('<p class="pokemon-types"></p>');   ***Changed because it wouldn't work in jquery***
+        var types = $('<p class="pokemon-types"></p>');
         var closeButtonElement = $('<button class="modal-close"></button>');
         var exists = $('.modal');
         var pokemonDiv = $('<div class="pokemon-img-block"></div>');
@@ -102,9 +101,11 @@
             $(name).text(item.name);
             $(height).text('Height - ' + item.height);
 
-            span = types.innerHTML= item.types.map(item => {  // not sure how to do it in jquery
+            types.text(item.types.map(item => item.type.name));
+           
+            /*span = types.innerHTML= item.types.map(item => {  // not sure how to do it in jquery
                 return item.type.name;
-            })
+            })*/
         });
 
         // avoid creating another modal everytime another button is clicked
