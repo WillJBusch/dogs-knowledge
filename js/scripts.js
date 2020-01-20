@@ -86,8 +86,7 @@
         var types = document.createElement('p');
         types.classList.add('pokemon-types');  //$('<p class="pokemon-types"></p>');   ***Changed because it wouldn't work in jquery***
         var closeButtonElement = $('<button class="modal-close"></button>');
-        //var exists = $('.modal');
-        var exists = document.querySelector('.modal'); /*********'removeChild' does not work if I reference modal via jQuery  *********/
+        var exists = $('.modal');
         var pokemonDiv = $('<div class="pokemon-img-block"></div>');
 
         //appending img to pokeomDiv for styling in css
@@ -109,8 +108,8 @@
         });
 
         // avoid creating another modal everytime another button is clicked
-        var $containerModal = document.querySelector('#modal-container'); /********* can't call 'removeChild' if the $modalContainer is referenced via jQuery -> $containerModal = JS *********/
-        if(exists) $containerModal.removeChild(exists);
+        console.log(exists)
+        if(exists) exists.remove();
 
 
         //appending elements
