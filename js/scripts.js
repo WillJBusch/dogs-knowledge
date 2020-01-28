@@ -63,9 +63,8 @@
     });
 
     function addListItem(pokemon) {
-        //var $pokeList = $('.pokemon-list');
-        var button = $('<button class="buttonToStyle"></button');
-        var listItem = $('<li ></li>');
+        var button = $('<button type="button" id="pokemon-button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modal-container"></button>');
+        var listItem = $('<li></li>');
         $($pokemonList).append(listItem);
         $(button).text(pokemon.name);
         $(listItem).append(button);
@@ -77,23 +76,18 @@
     }
 
     function showDetails(item) {
-        // creating variables and HTML-elements
-        var $modalContainer = $('#modal-container');
-        var modal = $('<div class="modal"></div>');
-        var img =  $('<img class="pokemon-img">');        
-        var name = $('<h1 class="pokemon-name"></h1>');
+        // referencing HTML elements and modal classes
+        var modal = $('.modal-body');
+        var name = $('.modal-title');
+        
+        // creating variables and HTML-elements        
+        var img =  $('<img class="pokemon-img">');       
         var height = $('<p class="pokemon-height"></p>');
-        var types = $('<p class="pokemon-types"></p>');
-        var closeButtonElement = $('<button class="modal-close"></button>');
-        var exists = $('.modal');
+        var types = $('<p class="pokemon-types"></p>');        
         var pokemonDiv = $('<div class="pokemon-img-block"></div>');
 
         //appending img to pokeomDiv for styling in css
         $(pokemonDiv).append(img);
-
-        //close button
-        $(closeButtonElement).text('Close');
-        closeButtonElement.on('click', hideModal);
 
         // loading pokemondetails into variable
         pokemonRepository.loadDetails(item).then(function () {
@@ -101,61 +95,22 @@
             $(name).text(item.name);
             $(height).text('Height - ' + item.height);
 
-            types.text(item.types.map(item => item.type.name));
-           
-            /*span = types.innerHTML= item.types.map(item => {  // not sure how to do it in jquery
-                return item.type.name;
-            })*/
+            types.text('Type - ' + item.types.map(item => item.type.name));
         });
 
         // avoid creating another modal everytime another button is clicked
-        console.log(exists)
-        if(exists) exists.remove();
+        if(modal.children().length) {
+            modal.children().remove();
+        }
 
 
         //appending elements
-        $(modal).append(name);
-        $(modal).append(pokemonDiv);
-        $(modal).append(height);
-        $(modal).append(types);
-        $(modal).append(closeButtonElement);
-
-        $($modalContainer).append(modal);
-
-        //adding is visible class to make modal visible
-        $('#modal-container').addClass('is-visible');
+        $(modal).append(height)
+                .append(types)
+                .append(pokemonDiv)
 
     }
-    //defining $modalContainer as modal-container again
-    var $modalContainer = $('#modal-container');
-
-    //close modal esc
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && $modalContainer.classList.contains('is-visible')) {
-            hideModal();
-        }
-    });
-
-    // close modal by clicking outside of it    
-    $modalContainer.on('click', (e) => {
-        var target = e.target;
-        if (target === $modalContainer) {
-            hideModal();
-        }
-    });
-
-    // declaring hidemodal function to remove modal
-    function hideModal() {
-        $('#modal-container').removeClass('is-visible');
-    }
-
     // referencing HTML ul-tag pokemon-list
     var $pokemonList = $('.pokemon-list');
-
-    // declaring function to print pokemon
-    // pokemonRepository.catchAll().each(function(podekomDetails) {
-    //     addListItem(pokemonDetails);
-    // });
-
 
 })();
